@@ -1,5 +1,7 @@
-﻿  EventsCenter.cpp
+﻿  stdafx.cpp
+  dllmain.cpp
+  EventsCenter.cpp
   EventsCenterImpl.cpp
   正在生成代码...
-    正在创建库 C:\Users\a\Desktop\GUGW\03CPPcode\20CPPPractice\VS2017Project\Debug\EventsCenter.lib 和对象 C:\Users\a\Desktop\GUGW\03CPPcode\20CPPPractice\VS2017Project\Debug\EventsCenter.exp
-  EventsCenter.vcxproj -> C:\Users\a\Desktop\GUGW\03CPPcode\20CPPPractice\VS2017Project\Debug\EventsCenter.dll
+    正在创建库 C:\Users\a\Desktop\GUGW\03CPPcode\21EventsCenter\Debug\EventsCenter.lib 和对象 C:\Users\a\Desktop\GUGW\03CPPcode\21EventsCenter\Debug\EventsCenter.exp
+  EventsCenter.vcxproj -> C:\Users\a\Desktop\GUGW\03CPPcode\21EventsCenter\Debug\EventsCenter.dll
