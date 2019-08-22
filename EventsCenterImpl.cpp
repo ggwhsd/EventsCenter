@@ -28,7 +28,7 @@ void  EventsCenter::eventDispatchLoop()
 		{
 			break;
 		}
-		if (newEvent.type != EVENT_TYPE::EVENT_NONE)
+		if (newEvent.type >= 0)
 		{
 			lock_guard<mutex> lk(m_mutex_update);
 			bool isContinue = false;
@@ -36,7 +36,13 @@ void  EventsCenter::eventDispatchLoop()
 			{
 				isContinue = (*listener)->EventHandle(newEvent);
 				if (isContinue == false)
+				{
+					#ifdef EVENT_DATA_VOID
+					delete newEvent.data;  
+					#endif // EVENT_DATA_VOID
+
 					break;
+				}
 			}
 		}
 	}

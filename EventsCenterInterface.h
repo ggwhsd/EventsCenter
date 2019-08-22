@@ -4,7 +4,7 @@ using namespace std;
 /*
 * 2019/8/14
 * author ： GUGW
-* 事件分发中心接口
+* 
 */
 
 
@@ -14,7 +14,12 @@ using namespace std;
 #define EVENTSCENTER_API __declspec(dllimport)
 #endif
 
+//事件数据的三种实现方式
+//#define EVENT_DATA_UNION  
+//#define EVENT_DATA_VOID
+#define EVENT_DATA_CLASS
 
+#ifdef EVENT_DATA_UNION
 
 enum EVENT_TYPE
 {
@@ -24,7 +29,6 @@ enum EVENT_TYPE
 	EVENT_TRADE
 };
 
-//行情数据
 struct TICK
 {
 
@@ -43,28 +47,52 @@ struct NOTIFY
 {
 
 };
-/*
-	此处扩展考虑： EVENT_DATA 也就是事件的数据，如果要支持自定义，同时又方便不同模块传递，则使用union是一种不错的方式，但是也可以使用void *的方式灵活性会更高。
 
-	union方式的好处：所有数据类型都定义好，然后通过栈操作，方便快捷。
-			   劣势：需要数据类型都定义好，否则无法使用，对于事件数据的内省扩展有一定局限。
-    void*方式的好处：可以任意类型，接收者根据event_type来判断具体类型，然后使用类型转换。灵活性高。
-			   劣势：因为EventsCenter是多线程安全的，所以需要动态创建事件数据（new 堆），使用完之后若不需要这个数据，需要及时销毁（delete）。
+/*
+union方式的好处：所有数据类型都定义好，然后通过栈操作，方便快捷。
+劣势：需要数据类型都定义好，否则无法使用，对于事件数据的内省扩展有一定局限。
 */
 union EVENT_DATA
 {
-	TRADE trade;
-	ORDER order;
-	TICK tick;
+TRADE trade;
+ORDER order;
+TICK tick;
 };
-
 struct EVENT
 {
-
 	EVENT_TYPE type;
 	EVENT_DATA data;
+};
+#endif // EVENT_DATA_UNION
+
+#ifdef EVENT_DATA_VOID
+/*
+void*方式的好处：可以任意类型，接收者根据event_type来判断具体类型，然后使用类型转换。灵活性高。
+劣势：因为EventsCenter是多线程安全的，所以需要动态创建事件数据（new 堆），使用完之后若不需要这个数据，需要及时销毁（delete）。
+*/
+
+#define EVENT_DATA (void*);
+struct EVENT
+{
+	int type;
+	void* data;
+};
+#endif // EVENT_DATA_VOID
+
+#ifdef EVENT_DATA_CLASS
+/*继承方式*/
+class IEVENT
+{
 
 };
+struct EVENT
+{
+	int type;
+	IEVENT *data;
+};
+
+#endif // EVENT_DATA_CLASS
+
 
 
 class IEventListener
