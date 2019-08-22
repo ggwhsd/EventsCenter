@@ -10,52 +10,94 @@
 #include <iostream>
 #pragma comment(lib, "./lib/EventsCenter.lib")
 using namespace std;
-//EVENT_TYPE type，you can declare yourself type  in the EventsCenterInterface.h.
-//EVENT_DATA ,you can declare yourself type in the EventsCenterInterface.h
+
+#ifdef EVENT_DATA_CLASS
+/*
+	yourself eventtype and event data class
+*/
+enum EVENT_TYPE
+{
+	EVENT_NONE,
+	EVENT_TICK,
+	EVENT_ORDER,
+	EVENT_TRADE
+};
+class TickEvent : public IEVENT
+{
+public:
+	int a;
+	int b;
+	int c;
+};
+
+class OrderEvent : public IEVENT
+{
+public:
+	int a;
+	int b;
+	string c;
+};
+
+/*
+  yourself eventListenerClass
+*/
 class TestTickListener : public IEventListener
 {
 public:
-	virtual bool EventHandle(EVENT result) override
+	virtual bool EventHandle(EVENT args) override
 	{
-		if (result.type == EVENT_TYPE::EVENT_TICK)
-			cout  << __FUNCTION__ << " result " << result.type << " " << endl;
+		if (args.type == EVENT_TYPE::EVENT_TICK)
+		{
+			cout << __FUNCTION__ << " args.type " << args.type << " " << ((TickEvent*)args.data)->c << endl;
+
+		}
 		return true;
 	}
 };
 class TestOrderListener : public IEventListener
 {
 public:
-	virtual bool EventHandle(EVENT result) override
+	virtual bool EventHandle(EVENT args) override
 	{
-		if (result.type != EVENT_TYPE::EVENT_ORDER)
+		if (args.type != EVENT_TYPE::EVENT_ORDER)
 			return true;
 
-		cout  << __FUNCTION__ << " result " << result.type << " " <<endl;
-		cout  << __FUNCTION__ << " result " << result.type << " "  << endl;
+		cout << __FUNCTION__ << " args.type " << args.type << " " << ((OrderEvent*)args.data)->c << endl;
 		return true;
 	}
 };
+
+
 int main()
 {
 	IEventsCenter *pCenter = CreateEventCenterObj();
-	pCenter->Init("ooo");
-	pCenter->Run();
+	pCenter->Init("ooo");  
+	pCenter->Run();	   
+
 	TestTickListener tickListener;
 	pCenter->addEventListener(&tickListener);
+
 	TestOrderListener *orderListener = new TestOrderListener();
 	pCenter->addEventListener(orderListener);
+
 	EVENT ev1;
-	TICK t;
+	TickEvent *t = new TickEvent();
 	ev1.type = EVENT_TYPE::EVENT_TICK;
-	ev1.data.tick = t;
+	ev1.data = t;
 	pCenter->sendEvent(ev1);
-	ORDER order;
+
+	OrderEvent *order = new OrderEvent();
+	order->c = "hello my father";
 	ev1.type = EVENT_TYPE::EVENT_ORDER;
-	ev1.data.order = order;
+	ev1.data = order;
 	pCenter->sendEvent(ev1);
+
 	system("pause");
+
 	pCenter->Close();
+	return 0;
 }
+#endif
 
 ```
 
