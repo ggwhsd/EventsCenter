@@ -1,7 +1,7 @@
 #include "./EventsCenterImpl.h"
 
 
-
+#include <chrono>
 
 
 
@@ -14,6 +14,7 @@ void EventsCenter::addEventListener(IEventListener *listener)
 
 void EventsCenter::sendEvent(EVENT ev1)
 {
+	ev1.data->createTime = chrono::time_point_cast<chrono::microseconds>(chrono::steady_clock::now());
 	mes->notify(ev1);
 }
 //事件分发,采用类似广播方式，不进行区分消息类型，由接收者自己判断消息类型来处理
@@ -40,6 +41,9 @@ void  EventsCenter::eventDispatchLoop()
 					#ifdef EVENT_DATA_VOID
 					delete newEvent.data;  
 					#endif // EVENT_DATA_VOID
+					#ifdef EVENT_DATA_CLASS
+					delete newEvent.data;
+					#endif 
 
 					break;
 				}
@@ -68,6 +72,12 @@ void EventsCenter::Init(string str)
 {
 	name = str;
 	mes = new messenger<EVENT>();
+}
+
+int EventsCenter::getQueueEvents()
+{
+	
+	return mes->getDepth();
 }
 
 EventsCenter::EventsCenter()

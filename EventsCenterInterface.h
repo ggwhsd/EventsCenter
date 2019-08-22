@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <chrono>
 using namespace std;
 /*
 * 2019/8/14
@@ -18,6 +19,9 @@ using namespace std;
 //#define EVENT_DATA_UNION  
 //#define EVENT_DATA_VOID
 #define EVENT_DATA_CLASS
+
+typedef chrono::time_point<chrono::steady_clock, chrono::microseconds> microSeoncd_timePoint;
+
 
 #ifdef EVENT_DATA_UNION
 
@@ -83,7 +87,9 @@ struct EVENT
 /*继承方式*/
 class IEVENT
 {
-
+public:
+	microSeoncd_timePoint createTime;
+	virtual ~IEVENT() {};
 };
 struct EVENT
 {
@@ -125,6 +131,8 @@ public:
 	virtual void Close()=0;
 	//初始化，给与复制名称标识该事件分发中心。
 	virtual void Init(string str)=0;
+
+	virtual int getQueueEvents()=0;
 	virtual ~IEventsCenter() {};
 };
 

@@ -41,7 +41,7 @@ public:
 
 	void init()
 	{
-
+		
 	}
 	int  getDepth()
 	{
@@ -84,6 +84,7 @@ public:
 
 	void Init(string str);
 
+	virtual int getQueueEvents();
 	EventsCenter();
 	~EventsCenter();
 
