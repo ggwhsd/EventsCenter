@@ -47,7 +47,10 @@ public:
 	{
 		return data_queue.size();
 	}
-
+	~messenger() 
+	{
+		
+	}
 private:
 	mutex mut;
 	queue<T> data_queue;
@@ -59,8 +62,8 @@ private:
 class EventsCenter : public IEventsCenter
 {
 private:
-	string name;
-	messenger<EVENT> * mes;
+	int name;
+	messenger<EVENT>  mes;
 	bool isOpen; //是否关闭
 	thread *td_dispatch;
 	mutex m_mutex_update;
@@ -82,7 +85,7 @@ public:
 	//关闭事件中心。
 	void Close();
 
-	void Init(string str);
+	void Init(int id);
 
 	virtual int getQueueEvents();
 	EventsCenter();

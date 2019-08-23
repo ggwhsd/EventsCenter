@@ -130,13 +130,13 @@ public:
 	//关闭事件中心。
 	virtual void Close()=0;
 	//初始化，给与复制名称标识该事件分发中心。
-	virtual void Init(string str)=0;
+	virtual void Init(int Id)=0;
 
 	virtual int getQueueEvents()=0;
 	virtual ~IEventsCenter() {};
 };
 
 
-extern "C" EVENTSCENTER_API IEventsCenter* _stdcall CreateEventCenterObj();
+extern "C" EVENTSCENTER_API IEventsCenter*  CreateEventCenterObj();
 
-extern "C" EVENTSCENTER_API void _stdcall DestroyEventCenterObj(IEventsCenter* pExport);
+extern "C" EVENTSCENTER_API void  DestroyEventCenterObj(IEventsCenter* pExport);

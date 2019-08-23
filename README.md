@@ -3,6 +3,7 @@
  when it runs, it will create a new thread and dispatch events in this new thread.
 
 # democode
+project code is `unicode`
 
 ```cpp
 
