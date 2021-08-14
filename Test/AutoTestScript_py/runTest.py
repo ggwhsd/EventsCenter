@@ -48,27 +48,28 @@ def main():
         if(testNow == testNeedCount):
             testNow=0
             testArgsIndex +=1
-            print "testArgsIndex:",testArgsIndex
+            print("testArgsIndex:",testArgsIndex)
         if(testArgsIndex == 3):
             testNowCycle += 1
             testArgsIndex = 0;
-            print "cycleCounts:",testNowCycle
+            print("cycleCounts:",testNowCycle)
     fdetail.close()
     i=0
     tplt = "{0:>10}\t{1:>15}\t{2:>15}\t{3:>15}"
-    print tplt.format("events", "totalTimeSpan", "EventsPerSecond", "TimeSpanPerTime",'')
+    print(tplt.format("events", "totalTimeSpan", "EventsPerSecond", "TimeSpanPerTime",''))
     tplt = "{0:>10}\t{1:>15.2f}\t{2:>15.2f}\t{3:>15.2f}"
     while(i<len(testArgs)):
         j=0
+        sumTimespan =0.0
+        sumeventsPerSeconds=0.0
+        sumagvTimeSpanPerEvent=0.0
         while(j<len(performanceTestResult[testArgs[i]])):
-            sumTimespan =0.0
-            sumeventsPerSeconds=0.0
-            sumagvTimeSpanPerEvent=0.0
+
             sumTimespan = sumTimespan + float(performanceTestResult[testArgs[i]][j].Timespan)
             sumeventsPerSeconds = sumeventsPerSeconds + float(performanceTestResult[testArgs[i]][j].eventsPerSeconds)
             sumagvTimeSpanPerEvent = sumagvTimeSpanPerEvent + float(performanceTestResult[testArgs[i]][j].agvTimeSpanPerEvent)
             j = j+1
-        print tplt.format(testArgs[i],sumTimespan/j,sumeventsPerSeconds/j,sumagvTimeSpanPerEvent/j)
+        print(tplt.format(testArgs[i],sumTimespan/j,sumeventsPerSeconds/j,sumagvTimeSpanPerEvent/j))
         i = i+1
         
         
